@@ -12,6 +12,9 @@
 /*.userprefs
 /*.pidb
 /*.booproj
+*.DotSettings
+Assets/UnityVS.meta
+Assets/UnityVS/
 
 #Unity3D Generated File On Crash Reports
 sysinfo.txt
