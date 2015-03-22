@@ -60,6 +60,7 @@ public class Player : MonoBehaviour {
 
     public void CaughtInExplosion(Explosion explosion) {
         if (CanBeExploded) {
+            rigidbody2D.velocity = rigidbody2D.velocity.withY(0);
             var vectorFromExplosion = (transform.position - explosion.transform.position);
             var multipliedNormalizedFromExplosion = Vector2.Scale(vectorFromExplosion, ForceMultipier).normalized;
             rigidbody2D.AddForce(multipliedNormalizedFromExplosion * ExplosionForce);
