@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
     public float BulletSpeed = 40;
+    public float LeftShootXLimit = -4;
+    public float RightShootXLimit = 4;
     [Range(0f, 1000f)]
     public float ShootHorizontalForce = 200;
     [Range(0f, 3f)]
@@ -28,11 +30,13 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             var newBulletObj = (GameObject) Instantiate(BulletPrefab, transform.position, Quaternion.identity);
 
-            var normalizedToMouse = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
-            newBulletObj.GetComponent<Rigidbody2D>().velocity = normalizedToMouse * BulletSpeed;
+            var shootDirection = (Camera.main.ScreenToViewportPoint(Input.mousePosition).to2() - (0.5f * Vector2.one)).normalized; // dir from center of screen to click
+            shootDirection = shootDirection.withY(-Mathf.Abs(shootDirection.y)); // pretend click is always in bottom half of screen
+            shootDirection = shootDirection.withY(Mathf.Clamp(shootDirection.y, -0.5f, -1f));
+            newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
 
-            rigidbody2D.AddForce(new Vector2(-normalizedToMouse.x * ShootHorizontalForce, 0));
-            if (rigidbody2D.velocity.y < 0 && normalizedToMouse.y < 0) {
+            rigidbody2D.AddForce(new Vector2(-shootDirection.x * ShootHorizontalForce, 0));
+            if (rigidbody2D.velocity.y < 0 && shootDirection.y < 0) {
                 rigidbody2D.velocity = rigidbody2D.velocity.withY(ShootWhenFallingVelocity);
             }
         }
