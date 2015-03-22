@@ -4,14 +4,16 @@ using System.Collections;
 public class ObjectEmitter : MonoBehaviour {
 
     public GameObject ObjectToEmit;
-    
-    [Range(0.01f, 10f)]
-    public float EmitTimeInterval = 1f;
-    float emitTime;
+
+    public bool HeightBasedEmit = true;
     [Range(0.01f, 10f)]
     public float EmitHeightInterval = 2f;
     float previousEmitHeight;
 
+    public bool TimeBasedEmit = true;
+    [Range(0.01f, 10f)]
+    public float EmitTimeInterval = 1f;
+    float emitTime;
 
     [Range(0, 10)]
     public float EmitWidth = 1f;
@@ -25,13 +27,13 @@ public class ObjectEmitter : MonoBehaviour {
 
     void Update() {
         // height-based emit
-        if (previousEmitHeight + EmitHeightInterval <= transform.position.y) {
+        if (HeightBasedEmit && (previousEmitHeight + EmitHeightInterval) <= transform.position.y) {
             Emit(transform.position.withY(previousEmitHeight + EmitHeightInterval));
             previousEmitHeight += EmitHeightInterval;
             emitTime = 0;
         }
         // time-based emit
-        if (emitTime < EmitTimeInterval) {
+        if (TimeBasedEmit && emitTime < EmitTimeInterval) {
             emitTime += Time.deltaTime;
             if (emitTime >= EmitTimeInterval) {
                 Emit(transform.position);
