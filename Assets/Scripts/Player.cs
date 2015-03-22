@@ -6,8 +6,6 @@ public class Player : MonoBehaviour {
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
     public float BulletSpeed = 40;
-    public float LeftShootXLimit = -4;
-    public float RightShootXLimit = 4;
     [Range(0f, 1000f)]
     public float ShootHorizontalForce = 200;
     [Range(0f, 3f)]
@@ -18,6 +16,8 @@ public class Player : MonoBehaviour {
     [Range(0f, 5000f)]
     public float ExplosionForce = 1000;
     public Vector2 ForceMultipier = new Vector2(0.5f, 1f);
+
+    public bool ScreenRelativeControls;
 
     new Rigidbody2D rigidbody2D;
 
@@ -30,9 +30,14 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             var newBulletObj = (GameObject) Instantiate(BulletPrefab, transform.position, Quaternion.identity);
 
-            var shootDirection = (Camera.main.ScreenToViewportPoint(Input.mousePosition).to2() - (0.5f * Vector2.one)).normalized; // dir from center of screen to click
-            shootDirection = shootDirection.withY(-Mathf.Abs(shootDirection.y)); // pretend click is always in bottom half of screen
-            shootDirection = shootDirection.withY(Mathf.Clamp(shootDirection.y, -0.5f, -1f));
+            Vector2 shootDirection;
+            if (ScreenRelativeControls) {
+                shootDirection = (Camera.main.ScreenToViewportPoint(Input.mousePosition).to2() - (0.5f * Vector2.one)).normalized; // dir from center of screen to click
+                shootDirection = shootDirection.withY(-Mathf.Abs(shootDirection.y)); // pretend click is always in bottom half of screen
+                shootDirection = shootDirection.withY(Mathf.Clamp(shootDirection.y, -0.5f, -1f)); // pretend click is always far enough towards bottom of screen
+            } else {
+                shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
+            }
             newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
 
             rigidbody2D.AddForce(new Vector2(-shootDirection.x * ShootHorizontalForce, 0));
