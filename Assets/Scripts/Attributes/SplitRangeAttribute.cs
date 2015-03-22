@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 
 public class SplitRangeAttribute : PropertyAttribute {
     public float Start { get; private set; }

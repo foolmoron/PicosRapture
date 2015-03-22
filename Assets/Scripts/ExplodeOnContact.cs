@@ -7,9 +7,12 @@ public class ExplodeOnContact : MonoBehaviour {
     public float AutoDestructTime = 2f;
     float autoDestructTime;
 
+    public GameObject ExplosionPrefab;
+
     public void Explode() {
-        Destroy(GetComponent<Rigidbody2D>());
-        Destroy(GetComponent<Collider2D>());
+        Destroy(gameObject);
+
+        var newExplosion = (GameObject)Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
     }
 
     void Update() {
