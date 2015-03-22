@@ -50,10 +50,12 @@ public class Player : MonoBehaviour {
     }
 
     public void CaughtInExplosion(Explosion explosion) {
-        var vectorFromExplosion = (transform.position - explosion.transform.position);
-        var multipliedNormalizedFromExplosion = Vector2.Scale(vectorFromExplosion, ForceMultipier).normalized;
-        rigidbody2D.AddForce(multipliedNormalizedFromExplosion * ExplosionForce);
-        CanBeExploded = false;
-        framesSinceLastExplosion = 0;
+        if (CanBeExploded) {
+            var vectorFromExplosion = (transform.position - explosion.transform.position);
+            var multipliedNormalizedFromExplosion = Vector2.Scale(vectorFromExplosion, ForceMultipier).normalized;
+            rigidbody2D.AddForce(multipliedNormalizedFromExplosion * ExplosionForce);
+            CanBeExploded = false;
+            framesSinceLastExplosion = 0;
+        }
     }
 }
