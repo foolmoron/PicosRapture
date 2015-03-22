@@ -4,11 +4,13 @@ using System.Collections;
 public class ObjectEmitter : MonoBehaviour {
 
     public GameObject ObjectToEmit;
-
-
+    
     [Range(0.01f, 10f)]
-    public float EmitInterval = 1f;
+    public float EmitTimeInterval = 1f;
     float emitTime;
+    [Range(0.01f, 10f)]
+    public float EmitHeightInterval = 2f;
+    float previousEmitHeight;
 
 
     [Range(0, 10)]
@@ -16,17 +18,24 @@ public class ObjectEmitter : MonoBehaviour {
     [Range(0, 10)]
     public float EmitHeight = 0f;
 
-    public void Emit() {
-        var pos = new Vector3(transform.position.x + (2 * Random.value - 1) * EmitWidth, transform.position.y + (2 * Random.value - 1) * EmitHeight, transform.position.z);
-        var newObj = (GameObject) Instantiate(ObjectToEmit, pos, Quaternion.Euler(0, 0, Random.value * 360));
+    public void Emit(Vector3 emitPos) {
+        var randomPos = new Vector3(emitPos.x + (2 * Random.value - 1) * EmitWidth, emitPos.y + (2 * Random.value - 1) * EmitHeight, emitPos.z);
+        var newObj = (GameObject) Instantiate(ObjectToEmit, randomPos, Quaternion.Euler(0, 0, Random.value * 360));
     }
 
     void Update() {
-        if (emitTime < EmitInterval) {
+        // height-based emit
+        if (previousEmitHeight + EmitHeightInterval <= transform.position.y) {
+            Emit(transform.position.withY(previousEmitHeight + EmitHeightInterval));
+            previousEmitHeight += EmitHeightInterval;
+            emitTime = 0;
+        }
+        // time-based emit
+        if (emitTime < EmitTimeInterval) {
             emitTime += Time.deltaTime;
-            if (emitTime >= EmitInterval) {
-                Emit();
-                emitTime -= EmitInterval;
+            if (emitTime >= EmitTimeInterval) {
+                Emit(transform.position);
+                emitTime -= EmitTimeInterval;
             }
         }
     }
@@ -44,6 +53,9 @@ public class ObjectEmitter : MonoBehaviour {
             Gizmos.DrawLine(tr, br);
             Gizmos.DrawLine(br, bl);
             Gizmos.DrawLine(bl, tl);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position.withX(-EmitWidth), transform.position.withX(EmitWidth));
         }
     }
 }
