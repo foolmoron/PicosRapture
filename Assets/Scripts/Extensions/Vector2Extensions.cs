@@ -19,6 +19,14 @@ public static class Vector2Extensions {
         return new Vector2(vector.x, vector.y + plusY);
     }
 
+    public static Vector2 timesX(this Vector2 vector, float timesX) {
+        return new Vector2(vector.x * timesX, vector.y);
+    }
+
+    public static Vector2 timesY(this Vector2 vector, float timesY) {
+        return new Vector2(vector.x, vector.y * timesY);
+    }
+
 	public static Vector2 Rotate(this Vector2 vector, float degrees) {
 		float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
 		float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
