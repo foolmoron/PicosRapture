@@ -12,7 +12,9 @@ public class ExplodeOnContact : MonoBehaviour {
     public void Explode() {
         Destroy(gameObject);
 
-        var newExplosion = (GameObject)Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
+        if (ExplosionPrefab) {
+            var newExplosion = (GameObject) Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     void Update() {
@@ -25,6 +27,10 @@ public class ExplodeOnContact : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+        Explode();
+    }
+
+    void OnCollisionEnter2D(Collision2D coll) {
         Explode();
     }
 }
