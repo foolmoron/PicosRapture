@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
+[ExecuteInEditMode]
 public class CameraConstantWidth : MonoBehaviour {
 
     public Vector2 DefaultSize = new Vector2(720, 960);

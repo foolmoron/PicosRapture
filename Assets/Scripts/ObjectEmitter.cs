@@ -23,6 +23,7 @@ public class ObjectEmitter : MonoBehaviour {
     public void Emit(Vector3 emitPos) {
         var randomPos = new Vector3(emitPos.x + (2 * Random.value - 1) * EmitWidth, emitPos.y + (2 * Random.value - 1) * EmitHeight, emitPos.z);
         var newObj = (GameObject) Instantiate(ObjectToEmit, randomPos, Quaternion.Euler(0, 0, Random.value * 360));
+        newObj.tag = "Emitted";
     }
 
     void Update() {
@@ -40,6 +41,14 @@ public class ObjectEmitter : MonoBehaviour {
                 emitTime -= EmitTimeInterval;
             }
         }
+    }
+
+    public void Reset() {
+        var allEmitted = GameObject.FindGameObjectsWithTag("Emitted");
+        for (int i = 0; i < allEmitted.Length; i++) {
+            Destroy(allEmitted[i]);
+        }
+        previousEmitHeight = 0;
     }
 
     void OnDrawGizmos() {
