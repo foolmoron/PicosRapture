@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 using System.Collections;
 
 public class Player : MonoBehaviour {
@@ -6,8 +8,8 @@ public class Player : MonoBehaviour {
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
     public float BulletSpeed = 40;
-    [Range(0f, 1000f)]
-    public float ShootHorizontalForce = 200;
+    [Range(0f, 10f)]
+    public float ShootHorizontalForce = 2;
     [Range(0f, 50f)]
     public float ShootDiveForce = 10;
     [Range(0f, 3f)]
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour {
     public float ShootInterval = 0.1f;
     [Range(0f, 1f)]
     public float TimeToShoot;
+    [Range(1, 0)] public float x;
 
     new Rigidbody2D rigidbody2D;
 
@@ -45,10 +48,10 @@ public class Player : MonoBehaviour {
         }
         // handle shooting bullet
         if (AutoFireControls) {
-            if (Input.GetMouseButton(0) && AutoFireTimer <= 0) { // fire instantly on click if you're not already in auto fire mode
-                TimeToShoot = 0;
-            } else if (Input.GetMouseButtonUp(0)) { // immediately turn off auto fire when letting go
-                AutoFireTimer = 0;
+            if (Input.GetMouseButton(0) && AutoFireTimer <= 0) { 
+                TimeToShoot = 0; // fire instantly on click if you're not already in auto fire mode
+            } else if (Input.GetMouseButtonUp(0)) { 
+                AutoFireTimer = 0; // immediately turn off auto fire when letting go
             }
 
             if (Input.GetMouseButton(0)) {
@@ -72,11 +75,17 @@ public class Player : MonoBehaviour {
                         }
                         newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
 
-                        rigidbody2D.AddForce(new Vector2(-shootDirection.x * ShootHorizontalForce, 0));
-                        rigidbody2D.velocity = rigidbody2D.velocity.withY(Mathf.Max(ShootHoverVelocity, rigidbody2D.velocity.y)); // hover a bit 
+                        var newVelocityX = -Mathf.Sign(shootDirection.x) * (shootDirection.x * shootDirection.x) * ShootHorizontalForce; // simple movement when aiming in a direction, no acceleration
+                        var newVelocityY = rigidbody2D.velocity.y;
+                        if (newVelocityY < 0 && shootDirection.y < 0) {
+                            newVelocityY = Mathf.Lerp(newVelocityY, ShootHoverVelocity, Mathf.Pow(-shootDirection.y, x));
+                        }
+                        rigidbody2D.velocity = new Vector2(newVelocityX, newVelocityY);
                     }
                     TimeToShoot += ShootInterval;
                 }
+            } else {
+                rigidbody2D.velocity = rigidbody2D.velocity.withX(Mathf.Lerp(rigidbody2D.velocity.x, 0, 0.05f)); // decelerate X movement when not firing
             }
         } else {
             if (Input.GetMouseButtonDown(0)) {
