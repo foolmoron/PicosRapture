@@ -10,6 +10,9 @@ public class WrapAround : MonoBehaviour {
     [Range(0, 100)]
     public float HorizontalWrapRadius = 10f;
 
+    public bool RandomizeVertical;
+    public bool RandomizeHorizontal;
+
     void Update() {
         var currentX = transform.position.x;
         var currentY = transform.position.y;
@@ -17,17 +20,21 @@ public class WrapAround : MonoBehaviour {
             var obj = ObjectsToWrapAround[i];
 
             var diffX = (obj.position.x - currentX);
-            if (diffX > HorizontalWrapRadius) {
-                obj.position = obj.position.withX(currentX - HorizontalWrapRadius + (diffX - HorizontalWrapRadius));
-            } else if (diffX < -HorizontalWrapRadius) {
-                obj.position = obj.position.withX(currentX + HorizontalWrapRadius + (diffX + HorizontalWrapRadius));
+            if (diffX > HorizontalWrapRadius || diffX < -HorizontalWrapRadius) {
+                var sign = Mathf.Sign(diffX);
+                obj.position = obj.position.withX(currentX - (sign * HorizontalWrapRadius) + (diffX - (sign * HorizontalWrapRadius)));
+                if (RandomizeVertical) {
+                    obj.position = obj.position.withY(transform.position.y + Random.Range(-VerticalWrapRadius, VerticalWrapRadius));
+                }
             }
 
             var diffY = (obj.position.y - currentY);
-            if (diffY > VerticalWrapRadius) {
-                obj.position = obj.position.withY(currentY - VerticalWrapRadius + (diffY - VerticalWrapRadius));
-            } else if (diffY < -VerticalWrapRadius) {
-                obj.position = obj.position.withY(currentY + VerticalWrapRadius + (diffY + VerticalWrapRadius));
+            if (diffY > VerticalWrapRadius || diffY < -VerticalWrapRadius) {
+                var sign = Mathf.Sign(diffY);
+                obj.position = obj.position.withY(currentY - (sign * VerticalWrapRadius) + (diffY - (sign * VerticalWrapRadius)));
+                if (RandomizeHorizontal) {
+                    obj.position = obj.position.withX(transform.position.x + Random.Range(-HorizontalWrapRadius, HorizontalWrapRadius));
+                }
             }
         }
     }
