@@ -6,14 +6,9 @@ public class ObjectEmitter : MonoBehaviour {
     public GameObject ObjectToEmit;
 
     public bool HeightBasedEmit = true;
-    [Range(0.01f, 10f)]
+    public AnimationCurve EmitIntervalAtHeight;
     public float EmitHeightInterval = 2f;
     float previousEmitHeight;
-
-    public bool TimeBasedEmit = true;
-    [Range(0.01f, 10f)]
-    public float EmitTimeInterval = 1f;
-    float emitTime;
 
     [Range(0, 10)]
     public float EmitWidth = 1f;
@@ -31,15 +26,8 @@ public class ObjectEmitter : MonoBehaviour {
         if (HeightBasedEmit && (previousEmitHeight + EmitHeightInterval) <= transform.position.y) {
             Emit(transform.position.withY(previousEmitHeight + EmitHeightInterval));
             previousEmitHeight += EmitHeightInterval;
-            emitTime = 0;
-        }
-        // time-based emit
-        if (TimeBasedEmit && emitTime < EmitTimeInterval) {
-            emitTime += Time.deltaTime;
-            if (emitTime >= EmitTimeInterval) {
-                Emit(transform.position);
-                emitTime -= EmitTimeInterval;
-            }
+
+            EmitHeightInterval = EmitIntervalAtHeight.Evaluate(previousEmitHeight);
         }
     }
 
