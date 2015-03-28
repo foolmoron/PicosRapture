@@ -3,6 +3,8 @@
 using UnityEngine;
 using System.Collections;
 
+using Random = UnityEngine.Random;
+
 public class Player : MonoBehaviour {
 
     public event Action<Vector2> OnShoot = delegate { };
@@ -10,6 +12,10 @@ public class Player : MonoBehaviour {
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
     public float BulletSpeed = 40;
+    [Range(0f, 180f)]
+    public float ShootDirectionVariance = 10;
+    [Range(0f, 1f)]
+    public float ShootOffsetVariance = 0.5f;
     [Range(0f, 10f)]
     public float ShootHorizontalForce = 2;
     [Range(0f, 50f)]
@@ -72,8 +78,11 @@ public class Player : MonoBehaviour {
 
                         Vector2 shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
                         shootDirection = shootDirection.normalized;
+                        shootDirection = shootDirection.Rotate((Random.value - 0.5f) * ShootDirectionVariance);
+                        var perpendicular = new Vector2(-shootDirection.y, shootDirection.x);
 
                         newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
+                        newBulletObj.transform.position = newBulletObj.transform.position + (Vector3)(perpendicular * (Random.value - 0.5f) * ShootOffsetVariance);
                         newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
                         weaponRoot.kickback = -shootDirection * weaponRoot.kickbackStrength;
 
