@@ -71,6 +71,7 @@ public class Player : MonoBehaviour {
                         var newBulletObj = (GameObject) Instantiate(BulletPrefab, transform.position, Quaternion.identity);
 
                         Vector2 shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
+                        shootDirection = shootDirection.normalized;
 
                         newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
                         newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
