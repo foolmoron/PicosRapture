@@ -17,12 +17,7 @@ public class WeaponRoot : MonoBehaviour {
     Vector2 previousKickback;
 
     void Update() {
-        // clamp rotation
-        {
-            Rotation = Rotation % 360f;
-            if (Rotation < 0)
-                Rotation += 360;
-        }
+        Rotation = Rotation.rotationNormalizedDeg();
         // calculate real rotation and flipping of weapon sprite
         {
             var actualRotation = Rotation;

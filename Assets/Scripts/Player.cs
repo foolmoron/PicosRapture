@@ -16,6 +16,10 @@ public class Player : MonoBehaviour {
     public float ShootDiveForce = 10;
     [Range(0f, 3f)]
     public float ShootHoverVelocity = 1f;
+    [Range(1, 0)]
+    public float ShootHoverDirectionalExponent = 0.9f;
+    [Range(0, 1)]
+    public float VelocityRotationMultiplier = 0.05f;
 
     public bool CanBeExploded = true;
     int framesSinceLastExplosion;
@@ -30,14 +34,14 @@ public class Player : MonoBehaviour {
     public float ShootInterval = 0.1f;
     [Range(0f, 1f)]
     public float TimeToShoot;
-    [Range(1, 0)]
-    public float x;
 
     new Rigidbody2D rigidbody2D;
+    SpriteRenderer spriteRenderer;
     WeaponRoot weaponRoot;
 
     void Start() {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
         weaponRoot = GetComponentInChildren<WeaponRoot>();
     }
 
@@ -75,7 +79,7 @@ public class Player : MonoBehaviour {
                         var newVelocityX = -Mathf.Sign(shootDirection.x) * (shootDirection.x * shootDirection.x) * ShootHorizontalForce; // simple movement when aiming in a direction, no acceleration
                         var newVelocityY = rigidbody2D.velocity.y;
                         if (newVelocityY < 0 && shootDirection.y < 0) {
-                            newVelocityY = Mathf.Lerp(newVelocityY, ShootHoverVelocity, Mathf.Pow(-shootDirection.y, x));
+                            newVelocityY = Mathf.Lerp(newVelocityY, ShootHoverVelocity, Mathf.Pow(-shootDirection.y, ShootHoverDirectionalExponent));
                         }
                         rigidbody2D.velocity = new Vector2(newVelocityX, newVelocityY);
                         OnShoot(shootDirection);
@@ -85,6 +89,12 @@ public class Player : MonoBehaviour {
             } else {
                 rigidbody2D.velocity = rigidbody2D.velocity.withX(Mathf.Lerp(rigidbody2D.velocity.x, 0, 0.05f)); // decelerate X movement when not firing
             }
+        }
+        // rotate based on velocity
+        {
+            float targetAngle = Mathf.Acos(Mathf.Clamp(rigidbody2D.velocity.x * VelocityRotationMultiplier, -1, 1)) * Mathf.Rad2Deg - 90;
+            var currentAngle = spriteRenderer.transform.localRotation.eulerAngles.z;
+            spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
         }
     }
 
