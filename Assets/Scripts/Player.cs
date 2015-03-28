@@ -36,12 +36,12 @@ public class Player : MonoBehaviour {
     public float TimeToShoot;
 
     new Rigidbody2D rigidbody2D;
-    SpriteRenderer spriteRenderer;
+    Transform playerGraphic;
     WeaponRoot weaponRoot;
 
     void Start() {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        spriteRenderer = transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        playerGraphic = transform.FindChild("Sprite");
         weaponRoot = GetComponentInChildren<WeaponRoot>();
     }
 
@@ -93,8 +93,8 @@ public class Player : MonoBehaviour {
         // rotate based on velocity
         {
             float targetAngle = Mathf.Acos(Mathf.Clamp(rigidbody2D.velocity.x * VelocityRotationMultiplier, -1, 1)) * Mathf.Rad2Deg - 90;
-            var currentAngle = spriteRenderer.transform.localRotation.eulerAngles.z;
-            spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
+            var currentAngle = playerGraphic.transform.localRotation.eulerAngles.z;
+            playerGraphic.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
         }
     }
 
