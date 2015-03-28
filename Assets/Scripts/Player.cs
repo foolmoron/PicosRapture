@@ -5,6 +5,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
+    public event Action<Vector2> OnShoot = delegate {};
+
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
     public float BulletSpeed = 40;
@@ -81,6 +83,7 @@ public class Player : MonoBehaviour {
                             newVelocityY = Mathf.Lerp(newVelocityY, ShootHoverVelocity, Mathf.Pow(-shootDirection.y, x));
                         }
                         rigidbody2D.velocity = new Vector2(newVelocityX, newVelocityY);
+                        OnShoot(shootDirection);
                     }
                     TimeToShoot += ShootInterval;
                 }
@@ -107,6 +110,7 @@ public class Player : MonoBehaviour {
                 } else if (shootDirection.y > 0) {
                     rigidbody2D.velocity = rigidbody2D.velocity.plusY(-shootDirection.y * ShootDiveForce);
                 }
+                OnShoot(shootDirection);
             }
         }
     }
