@@ -79,12 +79,12 @@ public class Player : MonoBehaviour {
                         Vector2 shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
                         shootDirection = shootDirection.normalized;
                         shootDirection = shootDirection.Rotate((Random.value - 0.5f) * ShootDirectionVariance);
-                        var perpendicular = new Vector2(-shootDirection.y, shootDirection.x);
 
                         newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
-                        newBulletObj.transform.position = newBulletObj.transform.position + (Vector3)(perpendicular * (Random.value - 0.5f) * ShootOffsetVariance);
                         newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
                         weaponRoot.kickback = -shootDirection * weaponRoot.kickbackStrength;
+
+                        newBulletObj.GetComponentInChildren<SpriteRenderer>().transform.localPosition = newBulletObj.GetComponentInChildren<SpriteRenderer>().transform.localPosition.withY((Random.value - 0.5f) * ShootOffsetVariance);
 
                         var newVelocityX = -Mathf.Sign(shootDirection.x) * (shootDirection.x * shootDirection.x) * ShootHorizontalForce; // simple movement when aiming in a direction, no acceleration
                         var newVelocityY = rigidbody2D.velocity.y;
