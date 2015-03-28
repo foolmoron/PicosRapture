@@ -30,4 +30,16 @@ public static class Vector3Extensions {
     public static Vector3 plusZ(this Vector3 vector, float plusZ) {
         return new Vector3(vector.x, vector.y, vector.z + plusZ);
     }
+
+    public static Vector3 timesX(this Vector3 vector, float timesX) {
+        return new Vector3(vector.x * timesX, vector.y, vector.z);
+    }
+
+    public static Vector3 timesY(this Vector3 vector, float timesY) {
+        return new Vector3(vector.x, vector.y * timesY, vector.z);
+    }
+
+    public static Vector3 timesZ(this Vector3 vector, float timesZ) {
+        return new Vector3(vector.x, vector.y, vector.z * timesZ);
+    }
 }

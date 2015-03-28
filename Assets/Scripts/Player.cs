@@ -5,7 +5,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-    public event Action<Vector2> OnShoot = delegate {};
+    public event Action<Vector2> OnShoot = delegate { };
 
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
@@ -33,12 +33,15 @@ public class Player : MonoBehaviour {
     public float ShootInterval = 0.1f;
     [Range(0f, 1f)]
     public float TimeToShoot;
-    [Range(1, 0)] public float x;
+    [Range(1, 0)]
+    public float x;
 
     new Rigidbody2D rigidbody2D;
+    WeaponRoot weaponRoot;
 
     void Start() {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        weaponRoot = GetComponentInChildren<WeaponRoot>();
     }
 
     void Update() {
@@ -47,6 +50,11 @@ public class Player : MonoBehaviour {
             ScreenRelativeControls = !ScreenRelativeControls;
         } else if (Input.GetKeyDown(KeyCode.F)) {
             AutoFireControls = !AutoFireControls;
+        }
+        // rotate weapon to mouse
+        {
+            var vectorToMouse = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+            weaponRoot.Rotation = Mathf.Atan2(vectorToMouse.y, vectorToMouse.x) * Mathf.Rad2Deg;
         }
         // handle shooting bullet
         if (AutoFireControls) {
@@ -75,7 +83,10 @@ public class Player : MonoBehaviour {
                         } else {
                             shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
                         }
+
                         newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
+                        newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
+                        weaponRoot.kickback = -shootDirection * weaponRoot.kickbackStrength;
 
                         var newVelocityX = -Mathf.Sign(shootDirection.x) * (shootDirection.x * shootDirection.x) * ShootHorizontalForce; // simple movement when aiming in a direction, no acceleration
                         var newVelocityY = rigidbody2D.velocity.y;
@@ -102,7 +113,9 @@ public class Player : MonoBehaviour {
                 } else {
                     shootDirection = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
                 }
+                
                 newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
+                newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
 
                 rigidbody2D.AddForce(new Vector2(-shootDirection.x * ShootHorizontalForce, 0));
                 if (rigidbody2D.velocity.y < 0 && shootDirection.y < 0) { // hover a bit 
