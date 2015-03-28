@@ -17,7 +17,11 @@ public class ObjectEmitter : MonoBehaviour {
 
     public void Emit(Vector3 emitPos) {
         var randomPos = new Vector3(emitPos.x + (2 * Random.value - 1) * EmitWidth, emitPos.y + (2 * Random.value - 1) * EmitHeight, emitPos.z);
-        var newObj = (GameObject) Instantiate(ObjectToEmit, randomPos, Quaternion.Euler(0, 0, Random.value * 360));
+        var newObj = (GameObject) Instantiate(ObjectToEmit, randomPos, Quaternion.identity);
+        var animator = newObj.GetComponentInChildren<Animator>();
+        if (animator) {
+            animator.Play("Default", 0, Random.value);
+        }
         newObj.tag = "Emitted";
     }
 
