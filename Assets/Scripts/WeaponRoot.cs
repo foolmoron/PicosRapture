@@ -36,7 +36,7 @@ public class WeaponRoot : MonoBehaviour {
                 previousSign = -1;
                 actualRotation -= 180;
             }
-            transform.localRotation = Quaternion.Euler(0, 0, actualRotation);
+            transform.rotation = Quaternion.Euler(0, 0, actualRotation);
         }
         // add kickback offset
         {
