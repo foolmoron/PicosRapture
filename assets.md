@@ -32,6 +32,15 @@ They must use their weapons to climb up to Heaven by exploding angels
   - Weapon sprite
   - Projectile sprite
   - (WISHLIST) Explosion animation
+- Current characters
+  1. Pico, with machine gun, shoots bullets
+  2. Nene, with knives, throws knives
+  3. Darnell, with lighter and spray can, shoots fireballs
+  4. Cassandra, also with a gun?, shoots bullets?
+  5. Toilet stall kid, throws poop
+  6. Alucard, with psychic hands, throws chairs and random stuff like that
+  7. Hanzou, with shurikens, throws shurikens
+  8. ???
 
 ### Environment
 - Background color gradient that changes as you climb. It should be dark/firey at the bottom (like Hell) and will clear up and become more Heaven-like as you climb up. Helps to see long-term progress.
