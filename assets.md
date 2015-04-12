@@ -18,7 +18,7 @@ They must use their weapons to climb up to Heaven by exploding angels
 -- Killing them also steals their wings, which gives you a single automatic recovery if you fall too much
 
 ## Assets
-# Angels
+### Angels
 - Each angel is made up by taking random pieces from a big pool of parts and putting them together
 -- Heads
 -- Bodies
@@ -26,20 +26,20 @@ They must use their weapons to climb up to Heaven by exploding angels
 - A wing flapping animation, shared between all angels
 - A halo, shared between all angels
 
-# Characters
+### Characters
 - There will be several characters that the player can unlock and choose from. There is no gameplay difference between the characters, but each has the following unique art:
 -- Entire body sprite
 -- Weapon sprite
 -- Projectile sprite
 -- (WISHLIST) Explosion animation
 
-# Environment
+### Environment
 - Background color gradient that changes as you climb. It should be dark/firey at the bottom (like Hell) and will clear up and become more Heaven-like as you climb up. Helps to see long-term progress.
 - Clouds that randomly animate in the background. Helps to see short-term progress.
 - The ground where you will have some sort of lava/Hellish look
 - (WISHLIST) When you start a game, the ground/Hell opens up and spits out the character you chose
 
-# UI
+### UI
 - Pico's Rapture logo
 - Some way to select which character you want... maybe a thing at the bottom of the screen that you scroll horizontally through, and then tap the character you want?
 - Current score tracker while playing
