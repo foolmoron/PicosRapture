@@ -6,10 +6,7 @@ using System.Collections;
 [Serializable]
 public class PlayerPack {
     public string name = "N/A";
-    public Color HairColor = Color.white;
-    public Color FaceColor = Color.white;
-    public Color BodyColor = Color.white;
-    public Color FeetColor = Color.white;
+    public Sprite CharacterSprite;
     public Sprite WeaponSprite;
     public GameObject BulletPrefab;
 }
@@ -19,13 +16,6 @@ public class PlayerPacks : MonoBehaviour {
     public PlayerPack[] Packs;
     public int CurrentPackIndex = 0;
     int previousIndex;
-
-    //Player player;
-    //SpriteRenderer hair;
-    //SpriteRenderer face;
-    //SpriteRenderer body;
-    //SpriteRenderer feet;
-    //SpriteRenderer weapon;
 
     void Start() {
         SelectPlayerPack(0);
@@ -47,17 +37,11 @@ public class PlayerPacks : MonoBehaviour {
         var pack = Packs[CurrentPackIndex];
 
         var player = GetComponent<Player>();
-        var hair = player.transform.FindChild("Sprite/Hair").GetComponent<SpriteRenderer>();
-        var face = player.transform.FindChild("Sprite/Face").GetComponent<SpriteRenderer>();
-        var body = player.transform.FindChild("Sprite/Body").GetComponent<SpriteRenderer>();
-        var feet = player.transform.FindChild("Sprite/Feet").GetComponent<SpriteRenderer>();
+        var characterSprite = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
         var weapon = player.transform.FindChild("WeaponRoot/Weapon").GetComponent<SpriteRenderer>();
 
         player.BulletPrefab = pack.BulletPrefab;
-        hair.color = pack.HairColor;
-        face.color = pack.FaceColor;
-        body.color = pack.BodyColor;
-        feet.color = pack.FeetColor;
+        characterSprite.sprite = pack.CharacterSprite;
         weapon.sprite = pack.WeaponSprite;
     }
 }
