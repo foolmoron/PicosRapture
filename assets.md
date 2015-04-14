@@ -19,8 +19,8 @@ They must use their weapons to climb up to Heaven by exploding angels
 
 ## Assets
 ### Angels
-- Each angel is made up by taking random pieces from a big pool of parts and putting them together
-  - Heads
+#### Each angel is made up by taking random pieces from a big pool of parts and putting them together
+  -- Heads
   - Bodies
   - Legs/feet
 - A wing flapping animation, shared between all angels
