@@ -33,17 +33,17 @@ They must use their weapons to climb up to Heaven by exploding angels
   - Projectile sprite
   - (WISHLIST) Explosion animation
 - Current characters
-  1. Pico, with machine gun, shoots bullets
-  2. Nene, with knives, throws knives
-  3. Darnell, with lighter and spray can, shoots fireballs
-  4. Cassandra, also with a gun?, shoots bullets?
-  5. Toilet stall kid, throws poop
-  6. Alucard, with psychic hands, throws chairs and random stuff like that
-  7. Hanzou, with shurikens, throws shurikens
-  8. Alien Hominid, with laser gun, shoots laser bullets
-  9. Tankmen, basically the tank with a guy in it and the gun just rotates around, shoots tank shells
-  10. P-Bot, with arm cannon, shoots blammed/dead .swf files
-  11. ???
+  - Pico, with machine gun, shoots bullets
+  - Nene, with knives, throws knives
+  - Darnell, with lighter and spray can, shoots fireballs
+  - Cassandra, also with a gun?, shoots bullets?
+  - Toilet stall kid, throws poop
+  - Alucard, with psychic hands, throws chairs and random stuff like that
+  - Hanzou, with shurikens, throws shurikens
+  - Alien Hominid, with laser gun, shoots laser bullets
+  - Tankmen, basically the tank with a guy in it and the gun just rotates around, shoots tank shells
+  - P-Bot, with arm cannon, shoots blammed/dead .swf files
+  - ???
 
 ### Environment
 - Background color gradient that changes as you climb. It should be dark/firey at the bottom (like Hell) and will clear up and become more Heaven-like as you climb up. Helps to see long-term progress.
