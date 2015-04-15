@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class PicoCamera : MonoBehaviour {
@@ -29,14 +29,14 @@ public class PicoCamera : MonoBehaviour {
     void Update() {
         var velocityY = (playerRigidbody != null ? playerRigidbody : Player.GetComponent<Rigidbody2D>()).velocity.y;
 
-        // do offset curve
+        // do velocity-based offset
         {
             if (Application.isPlaying) {
                 OffsetY = Mathf.Lerp(OffsetY, VelocityToOffset.Evaluate(velocityY), 0.05f);
             }
             transform.position = transform.position.withY(Player.transform.position.y + OffsetY);
         }
-        // add on shoot offset on top of that
+        // add shoot-based offset on top of that
         {
             for (int i = 0; i < ShakeOnOffset.Length; i++) {
                 var obj = ShakeOnOffset[i];
@@ -46,7 +46,7 @@ public class PicoCamera : MonoBehaviour {
             previousOffset = onShootOffset;
             onShootOffset = Vector2.Lerp(onShootOffset, Vector2.zero, onShootOffsetFade);
         }
-        // add screen shake the end
+        // add screen shake at the end
         {
             if (Application.isPlaying) {
                 ShakeStrength = VelocityToShakeStrength.Evaluate(velocityY);
