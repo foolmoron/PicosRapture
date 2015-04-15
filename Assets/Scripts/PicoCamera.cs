@@ -58,7 +58,7 @@ public class PicoCamera : MonoBehaviour {
                 previousShake = shake;
             } else {
                 if (previousShake != Vector3.zero) {
-                    transform.localPosition = transform.localPosition - previousShake;
+                    transform.localPosition -= previousShake;
                     previousShake = Vector3.zero;
                 }
             }
@@ -70,8 +70,5 @@ public class PicoCamera : MonoBehaviour {
         if (Player) {
             Gizmos.DrawWireSphere(Player.transform.position.withX(transform.position.x).plusY(OffsetY), 1);
         }
-    }
-
-    void Shake() {
     }
 }
