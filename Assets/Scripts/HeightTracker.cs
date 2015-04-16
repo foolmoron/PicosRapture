@@ -23,11 +23,8 @@ public class HeightTracker : MonoBehaviour {
     }
 
     void Update() {
-        var currentHeight = Target.position.y;
+        CurrentHighest = Mathf.Max(CurrentHighest, Target.position.y);
 
-        if (currentHeight > CurrentHighest) {
-            CurrentHighest = currentHeight;
-        }
         CurrentScoreText.text = (CurrentHighest * HeightMultiplierInText).ToString("0.00") + "m";
         BestScoreText.text = "Best: " + (HighestEver * HeightMultiplierInText).ToString("0.00") + "m";
     }

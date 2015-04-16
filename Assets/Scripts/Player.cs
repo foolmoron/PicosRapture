@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class Player : MonoBehaviour {
 
     public event Action<Vector2> OnShoot = delegate { };
+    public event Action<Explosion> OnExploded = delegate { };
 
     public GameObject BulletPrefab;
     [Range(0f, 100f)]
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour {
     public float ShootInterval = 0.1f;
     [Range(0f, 1f)]
     public float TimeToShoot;
-
+    
     new Rigidbody2D rigidbody2D;
     Transform playerGraphic;
     WeaponRoot weaponRoot;
@@ -125,6 +126,7 @@ public class Player : MonoBehaviour {
             rigidbody2D.AddForce(new Vector2(0, ExplosionForce)); // explodes upwards no matter what
             CanBeExploded = false;
             framesSinceLastExplosion = 0;
+            OnExploded(explosion);
         }
     }
 }

@@ -38,7 +38,7 @@ public class ObjectEmitter : MonoBehaviour {
     public void Reset() {
         var allEmitted = GameObject.FindGameObjectsWithTag("Emitted");
         for (int i = 0; i < allEmitted.Length; i++) {
-            Destroy(allEmitted[i]);
+            DestroyImmediate(allEmitted[i]);
         }
         previousEmitHeight = 0;
     }
