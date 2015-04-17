@@ -11,6 +11,7 @@ public class AngelBoost : MonoBehaviour {
     public int AngelsToKillPerBoost = 20;
     [Range(0, 50)]
     public int AngelsUntilNextBoost = 20;
+    public bool BossExistsAlready;
 
     public float CurrentHeighest;
     [Range(0, 100)]
@@ -43,14 +44,19 @@ public class AngelBoost : MonoBehaviour {
     }
 
     public void ReportAngelKilled() {
-        if (!HasAngelBoost && playerHasFirstExploded) {
+        if (!BossExistsAlready && playerHasFirstExploded) {
             AngelsUntilNextBoost--;
         }
         if (AngelsUntilNextBoost <= 0) {
-            //HasAngelBoost = true;
             bossEmitter.EmitBoss(playerPacks, playerPacks.CurrentPackIndex);
+            BossExistsAlready = true;
             AngelsUntilNextBoost = AngelsToKillPerBoost;
         }
+    }
+
+    public void ReportBossKilled() {
+        HasAngelBoost = true;
+        BossExistsAlready = false;
     }
 
     void Update() {

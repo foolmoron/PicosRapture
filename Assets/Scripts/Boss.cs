@@ -29,11 +29,13 @@ public class Boss : MonoBehaviour {
     public float TimeToShoot = 3f;
     public GameObject BloodPrefab;
 
+    AngelBoost angelBoost;
     new Rigidbody2D rigidbody;
     WeaponRoot weaponRoot;
     GameObject graphic;
     
     void Start() {
+        angelBoost = FindObjectOfType<AngelBoost>();
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.velocity = new Vector2(0, 0);
         weaponRoot = GetComponentInChildren<WeaponRoot>();
@@ -90,5 +92,9 @@ public class Boss : MonoBehaviour {
             var currentAngle = graphic.transform.localRotation.eulerAngles.z;
             graphic.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
         }
+    }
+
+    void OnDestroy() {
+        angelBoost.ReportBossKilled();
     }
 }
