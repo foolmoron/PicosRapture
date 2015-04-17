@@ -33,11 +33,12 @@ public class AngelBoost : MonoBehaviour {
         FindObjectOfType<GameOver>().OnGameOver += () => {
             CurrentHeighest = 0;
             playerHasFirstExploded = false;
+            HasAngelBoost = false;
         };
     }
 
     public void ReportAngelKilled() {
-        if (!HasAngelBoost) {
+        if (!HasAngelBoost && playerHasFirstExploded) {
             AngelsUntilNextBoost--;
         }
         if (AngelsUntilNextBoost <= 0) {
