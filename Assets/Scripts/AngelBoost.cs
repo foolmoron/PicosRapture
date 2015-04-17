@@ -18,12 +18,17 @@ public class AngelBoost : MonoBehaviour {
     [Range(0f, 5000f)]
     public float BoostForce = 1000;
 
+    BossEmitter bossEmitter;
+
     Rigidbody2D targetRigidbody;
+    PlayerPacks playerPacks;
 
     bool playerHasFirstExploded;
 
     void Start() {
+        bossEmitter = FindObjectOfType<BossEmitter>();
         targetRigidbody = GetComponent<Rigidbody2D>();
+        playerPacks = GetComponent<PlayerPacks>();
         GetComponent<Player>().OnExploded += explosion => {
             if (!playerHasFirstExploded) {
                 AngelsUntilNextBoost = AngelsToKillPerBoost;
@@ -42,7 +47,8 @@ public class AngelBoost : MonoBehaviour {
             AngelsUntilNextBoost--;
         }
         if (AngelsUntilNextBoost <= 0) {
-            HasAngelBoost = true;
+            //HasAngelBoost = true;
+            bossEmitter.EmitBoss(playerPacks, playerPacks.CurrentPackIndex);
             AngelsUntilNextBoost = AngelsToKillPerBoost;
         }
     }
