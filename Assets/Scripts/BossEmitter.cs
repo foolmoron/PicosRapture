@@ -13,13 +13,14 @@ public class BossEmitter : MonoBehaviour {
     }
 
     public void EmitBoss(PlayerPacks packs, int packToExclude) {
-        StartCoroutine(EmitNextFrame(packs, packToExclude));
+        if (this)
+            StartCoroutine(EmitNextFrame(packs, packToExclude));
     }
 
     IEnumerator EmitNextFrame(PlayerPacks packs, int packToExclude) {
         yield return new WaitForEndOfFrame();
 
-        var bossObj = (GameObject) Instantiate(BossPrefab, transform.position, transform.rotation);
+        var bossObj = (GameObject) Instantiate(BossPrefab, transform.position.plusX((Random.value - 0.5f) * 8), transform.rotation);
         bossObj.transform.parent = transform.parent;
 
         var boss = bossObj.GetComponent<Boss>();

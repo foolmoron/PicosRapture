@@ -37,7 +37,6 @@ public class Boss : MonoBehaviour {
     void Start() {
         angelBoost = FindObjectOfType<AngelBoost>();
         rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.velocity = new Vector2(0, 0);
         weaponRoot = GetComponentInChildren<WeaponRoot>();
         graphic = transform.FindChild("Sprite").gameObject;
     }
