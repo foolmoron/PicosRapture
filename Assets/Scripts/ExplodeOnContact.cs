@@ -8,12 +8,13 @@ public class ExplodeOnContact : MonoBehaviour {
     float autoDestructTime;
 
     public GameObject ExplosionPrefab;
+    public Vector3 ExplosionOffset;
 
     public void Explode() {
         Destroy(gameObject);
 
         if (ExplosionPrefab) {
-            var newExplosion = (GameObject) Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
+            var newExplosion = (GameObject) Instantiate(ExplosionPrefab, transform.position + ExplosionOffset, Quaternion.identity);
         }
     }
 

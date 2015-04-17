@@ -3,6 +3,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour {
 
     public GameObject BulletPrefab;
+    public string BulletLayer;
     public Transform TargetX;
     public Transform TargetY;
     public Transform AimingTarget;
@@ -26,14 +27,17 @@ public class Boss : MonoBehaviour {
     public float ShootInterval = 2f;
     [Range(0, 10)]
     public float TimeToShoot = 3f;
+    public GameObject BloodPrefab;
 
     new Rigidbody2D rigidbody;
     WeaponRoot weaponRoot;
+    GameObject graphic;
     
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.velocity = new Vector2(0, 0);
         weaponRoot = GetComponentInChildren<WeaponRoot>();
+        graphic = transform.FindChild("Sprite").gameObject;
     }
 
     void FixedUpdate() {
@@ -64,6 +68,10 @@ public class Boss : MonoBehaviour {
                 // fire
                 {
                     var newBulletObj = (GameObject) Instantiate(BulletPrefab, transform.position, Quaternion.identity);
+                    newBulletObj.layer = LayerMask.NameToLayer(BulletLayer);
+                    newBulletObj.GetComponent<Collider2D>().isTrigger = true;
+                    newBulletObj.GetComponent<ExplodeOnContact>().ExplosionPrefab = BloodPrefab;
+                    newBulletObj.GetComponent<ExplodeOnContact>().ExplosionOffset = new Vector3(0, 0, -50);
 
                     Vector2 shootDirection = (AimingTarget.position - transform.position).normalized;
                     shootDirection = shootDirection.normalized;
@@ -75,6 +83,12 @@ public class Boss : MonoBehaviour {
                 }
                 TimeToShoot = ShootInterval;
             }
+        }
+        // rotate based on velocity
+        {
+            float targetAngle = Mathf.Acos(Mathf.Clamp(rigidbody.velocity.x * 0.15f, -1, 1)) * Mathf.Rad2Deg - 90;
+            var currentAngle = graphic.transform.localRotation.eulerAngles.z;
+            graphic.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
         }
     }
 }

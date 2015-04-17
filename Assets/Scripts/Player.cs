@@ -41,6 +41,8 @@ public class Player : MonoBehaviour {
     public float ShootInterval = 0.1f;
     [Range(0f, 1f)]
     public float TimeToShoot;
+
+    public Vector2 OnHitPushStrength = new Vector2(5f, 0.5f);
     
     new Rigidbody2D rigidbody2D;
     Transform playerGraphic;
@@ -117,6 +119,13 @@ public class Player : MonoBehaviour {
             } else {
                 CanBeExploded = true;
             }
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (LayerMask.LayerToName(other.gameObject.layer) == "BossBullet") {
+            var vectorToBullet = (other.transform.position - transform.position).normalized;
+            rigidbody2D.velocity = rigidbody2D.velocity + Vector2.Scale(-vectorToBullet, OnHitPushStrength);
         }
     }
 
