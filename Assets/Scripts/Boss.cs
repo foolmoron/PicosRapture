@@ -29,12 +29,17 @@ public class Boss : MonoBehaviour {
     public float TimeToShoot = 3f;
     public GameObject BloodPrefab;
 
+    public bool DieSilently;
+    public float PlayerFallSpeedSuicide = -25f;
+
+    Rigidbody2D playerRigidbody;
     AngelBoost angelBoost;
     new Rigidbody2D rigidbody;
     WeaponRoot weaponRoot;
     GameObject graphic;
     
     void Start() {
+        playerRigidbody = FindObjectOfType<Player>().GetComponent<Rigidbody2D>();
         angelBoost = FindObjectOfType<AngelBoost>();
         rigidbody = GetComponent<Rigidbody2D>();
         weaponRoot = GetComponentInChildren<WeaponRoot>();
@@ -91,9 +96,18 @@ public class Boss : MonoBehaviour {
             var currentAngle = graphic.transform.localRotation.eulerAngles.z;
             graphic.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
         }
+        // suicide if player is falling too fast
+        {
+            if (playerRigidbody.velocity.y <= PlayerFallSpeedSuicide) {
+                DieSilently = true;
+                GetComponent<DieOnContact>().Die();
+            }
+        }
     }
 
     void OnDestroy() {
-        angelBoost.ReportBossKilled();
+        if (!DieSilently) {
+            angelBoost.ReportBossKilled();
+        }
     }
 }

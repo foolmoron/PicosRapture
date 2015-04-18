@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
     public float TimeToShoot;
 
     public Vector2 OnHitPushStrength = new Vector2(5f, 0.5f);
+    public float PreviousDownwardsVelocity;
     
     new Rigidbody2D rigidbody2D;
     Transform playerGraphic;
@@ -108,6 +109,11 @@ public class Player : MonoBehaviour {
             float targetAngle = Mathf.Acos(Mathf.Clamp(rigidbody2D.velocity.x * VelocityRotationMultiplier, -1, 1)) * Mathf.Rad2Deg - 90;
             var currentAngle = playerGraphic.transform.localRotation.eulerAngles.z;
             playerGraphic.transform.localRotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(currentAngle.rotationNormalizedDeg(), targetAngle.rotationNormalizedDeg(), 0.25f));
+        }
+        // save last downwards velocity
+        {
+            if (rigidbody2D.velocity.y < 0)
+                PreviousDownwardsVelocity = rigidbody2D.velocity.y;
         }
     }
 

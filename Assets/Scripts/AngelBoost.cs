@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Security.Policy;
+
+using UnityEngine;
 using System.Collections;
 
 [ExecuteInEditMode]
@@ -40,6 +42,13 @@ public class AngelBoost : MonoBehaviour {
             CurrentHeighest = 0;
             playerHasFirstExploded = false;
             HasAngelBoost = false;
+            BossExistsAlready = false;
+            
+            var allBosses = FindObjectsOfType<Boss>();
+            for (int i = 0; i < allBosses.Length; i++) {
+                allBosses[i].DieSilently = true;
+                allBosses[i].GetComponent<DieOnContact>().Die();
+            }
         };
     }
 
