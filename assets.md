@@ -44,6 +44,7 @@ They must use their weapons to climb up to Heaven by exploding angels
     9. Tankmen, basically the tank with a guy in it and the gun just rotates around, shoots tank shells
     10. P-Bot, with arm cannon, shoots blammed/dead .swf files
     11. Chainsaw guy from Chainsaw the Children and Dad n' Me, with a chainsaw, that shoots smaller chainsaws
+    12. Piconjo, with a shotgun, shoots shotgun slugs
 
 ### Environment
 - Background color gradient that changes as you climb. It should be dark/firey at the bottom (like Hell) and will clear up and become more Heaven-like as you climb up. Helps to see long-term progress.
