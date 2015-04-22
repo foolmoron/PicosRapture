@@ -33,6 +33,8 @@ public class BossEmitter : MonoBehaviour {
             randomIndex = packs.Packs.Length - 1;
         var pack = packs.Packs[randomIndex];
 
+        boss.PlayerPacks = packs;
+        boss.PlayerPackIndex = randomIndex;
         boss.BulletPrefab = pack.BulletPrefab;
         bossObj.transform.FindChild("Sprite").GetComponent<SpriteRenderer>().sprite = pack.CharacterSprite;
         bossObj.transform.FindChild("WeaponRoot/Weapon").GetComponent<SpriteRenderer>().sprite = pack.WeaponSprite;

@@ -1,4 +1,8 @@
+using System;
+
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class Boss : MonoBehaviour {
 
@@ -31,6 +35,9 @@ public class Boss : MonoBehaviour {
 
     public bool DieSilently;
     public float PlayerFallSpeedSuicide = -25f;
+
+    public PlayerPacks PlayerPacks;
+    public int PlayerPackIndex;
 
     Rigidbody2D playerRigidbody;
     AngelBoost angelBoost;
@@ -109,5 +116,6 @@ public class Boss : MonoBehaviour {
         if (!DieSilently) {
             angelBoost.ReportBossKilled();
         }
+        PlayerPacks.UnlockPlayer(PlayerPackIndex);
     }
 }
