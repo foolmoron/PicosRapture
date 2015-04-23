@@ -14,7 +14,7 @@ public class ExplodeOnContact : MonoBehaviour {
         Destroy(gameObject);
 
         if (ExplosionPrefab) {
-            var newExplosion = (GameObject) Instantiate(ExplosionPrefab, transform.position + ExplosionOffset, Quaternion.identity);
+            Instantiate(ExplosionPrefab, transform.position + ExplosionOffset, Quaternion.identity);
         }
     }
 
