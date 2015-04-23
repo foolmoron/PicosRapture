@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class BossEmitter : MonoBehaviour {
 
+    public Player Player;
     public GameObject BossPrefab;
     public Transform TargetX;
     public Transform TargetY;
     public Transform AimingTarget;
 
+    Rigidbody2D playerRigidbody;
+    AngelBoost angelBoost;
+
     void Start() {
+        playerRigidbody = Player.GetComponent<Rigidbody2D>();
+        angelBoost = Player.GetComponent<AngelBoost>();
     }
 
     public void EmitBoss(PlayerPacks packs, int packToExclude) {
@@ -24,6 +30,8 @@ public class BossEmitter : MonoBehaviour {
         bossObj.transform.parent = transform.parent;
 
         var boss = bossObj.GetComponent<Boss>();
+        boss.PlayerRigidbody = playerRigidbody;
+        boss.AngelBoost = angelBoost;
         boss.TargetX = TargetX;
         boss.TargetY = TargetY;
         boss.AimingTarget = AimingTarget;

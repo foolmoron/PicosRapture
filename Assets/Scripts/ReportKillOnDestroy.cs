@@ -3,13 +3,11 @@ using System.Collections;
 
 public class ReportKillOnDestroy : MonoBehaviour {
 
-    AngelBoost angelBoost;
-
-    void Start() {
-        angelBoost = FindObjectOfType<AngelBoost>();
-    }
-
+    public AngelBoost AngelBoost;
+    
     void OnDestroy() {
-        angelBoost.ReportAngelKilled();
+        if (AngelBoost && AngelBoost.gameObject.activeSelf) {
+            AngelBoost.ReportAngelKilled();
+        }
     }
 }

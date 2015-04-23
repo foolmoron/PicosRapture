@@ -39,15 +39,14 @@ public class Boss : MonoBehaviour {
     public PlayerPacks PlayerPacks;
     public int PlayerPackIndex;
 
-    Rigidbody2D playerRigidbody;
-    AngelBoost angelBoost;
+    public Rigidbody2D PlayerRigidbody;
+    public AngelBoost AngelBoost;
+
     new Rigidbody2D rigidbody;
     WeaponRoot weaponRoot;
     GameObject graphic;
     
     void Start() {
-        playerRigidbody = FindObjectOfType<Player>().GetComponent<Rigidbody2D>();
-        angelBoost = FindObjectOfType<AngelBoost>();
         rigidbody = GetComponent<Rigidbody2D>();
         weaponRoot = GetComponentInChildren<WeaponRoot>();
         graphic = transform.FindChild("Sprite").gameObject;
@@ -105,7 +104,7 @@ public class Boss : MonoBehaviour {
         }
         // suicide if player is falling too fast
         {
-            if (playerRigidbody.velocity.y <= PlayerFallSpeedSuicide) {
+            if (PlayerRigidbody.velocity.y <= PlayerFallSpeedSuicide) {
                 DieSilently = true;
                 GetComponent<DieOnContact>().Die();
             }
@@ -114,7 +113,7 @@ public class Boss : MonoBehaviour {
 
     void OnDestroy() {
         if (!DieSilently) {
-            angelBoost.ReportBossKilled();
+            AngelBoost.ReportBossKilled();
         }
         PlayerPacks.UnlockPlayer(PlayerPackIndex);
     }

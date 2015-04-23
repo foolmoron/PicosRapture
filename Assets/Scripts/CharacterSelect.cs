@@ -5,20 +5,37 @@ using System.Collections;
 
 public class CharacterSelect : MonoBehaviour {
 
+    public Camera MainCamera;
     public Player Player;
     public PlayerPacks PlayerPacks;
 
+    public int CurrentCharacter;
     public GameObject[] Characters;
     public SpriteRenderer[] CharacterSprites;
     public Vector3 CharacterScale;
     [Range(0, 5)]
     public float CharacterSpacing;
+    [Range(0, 1)]
+    public float LerpSpeed = 0.1f;
+
+    public Collider2D SelectCollider;
+    public Collider2D LeftCollider;
+    public Collider2D RightCollider;
+    public GameObject UpArrow;
+
+    public bool Hidden;
+    public float HideYOffset = -2.5f;
+    [Range(0, 1)]
+    public float HideLerpSpeed = 0.1f;
+    float originalY;
 
     WrapAround wrapAround;
     
     void Start() {
         wrapAround = GetComponent<WrapAround>();
         wrapAround.HorizontalWrapRadius = CharacterSpacing * PlayerPacks.Packs.Length / 2;
+
+        originalY = transform.position.y;
 
         Characters = new GameObject[PlayerPacks.Packs.Length];
         CharacterSprites = new SpriteRenderer[PlayerPacks.Packs.Length];
@@ -41,10 +58,50 @@ public class CharacterSelect : MonoBehaviour {
 
         PlayerPacks.OnCharacterUnlocked += (pack, index) => {
             CharacterSprites[index].sprite = pack.CharacterSprite;
-            var offsetToCenter = -Characters[index].transform.position.x;
-            for (int i = 0; i < Characters.Length; i++) {
-                Characters[i].transform.Translate(offsetToCenter, 0, 0);
-            }
+            CurrentCharacter = index;
         };
+    }
+
+    void Update() {
+        // check "button" collisions
+        {
+            if (!Hidden && Input.GetMouseButtonDown(0)) {
+                var mouseWorld = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                if (SelectCollider.OverlapPoint(mouseWorld)) {
+                    var packIndex = Mathf.Clamp(CurrentCharacter, 0, PlayerPacks.Packs.Length - 1);
+                    if (PlayerPacks.Packs[packIndex].Unlocked) {
+                        PlayerPacks.SelectPlayerPack(packIndex);
+                        Player.gameObject.SetActive(true);
+                        Hidden = true;
+                    }
+                } else if (LeftCollider.OverlapPoint(mouseWorld)) {
+                    CurrentCharacter = (CurrentCharacter - 1 + PlayerPacks.Packs.Length) % PlayerPacks.Packs.Length;
+                } else if (RightCollider.OverlapPoint(mouseWorld)) {
+                    CurrentCharacter = (CurrentCharacter + 1 + PlayerPacks.Packs.Length) % PlayerPacks.Packs.Length;
+                }
+            }
+        }
+        // toggle up arrow to indicate selected character locked/unlocked
+        {
+            var packIndex = Mathf.Clamp(CurrentCharacter, 0, PlayerPacks.Packs.Length - 1);
+            UpArrow.SetActive(PlayerPacks.Packs[packIndex].Unlocked);
+        }
+        // smooth lerp to the current selection
+        {
+            var oldX = Characters[CurrentCharacter].transform.position.x;
+            var newX = Mathf.Lerp(oldX, 0, LerpSpeed);
+            var diff = newX - oldX;
+            for (int i = 0; i < Characters.Length; i++) {
+                Characters[i].transform.Translate(diff, 0, 0);
+            }
+        }
+        // smooth lerp in and out of sight
+        {
+            if (Hidden) {
+                transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY + HideYOffset, HideLerpSpeed));
+            } else {
+                transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY, HideLerpSpeed));
+            }
+        }
     }
 }

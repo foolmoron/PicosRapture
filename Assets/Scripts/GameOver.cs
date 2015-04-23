@@ -7,31 +7,49 @@ public class GameOver : MonoBehaviour {
 
     public event Action OnGameOver = delegate { };
 
+    public Player Player;
+    public CharacterSelect CharacterSelect;
+
     public Collider2D Target;
     public bool CanGameOver;
     new Collider2D collider;
 
     public ParticleSystem GameOverParticles;
-    public Vector3 ParticlesOffset;
-    public Vector3 ParticlesRotation;
+    public Transform ParticleTransform;
+
+    Vector3 originalPlayerPosition;
+
+    float canGameOverDelayTime = 1;
+    float canGameOverDelay;
 
     void Start() {
         collider = GetComponent<Collider2D>();
+        originalPlayerPosition = Player.transform.position;
     }
     
     void FixedUpdate() {
         if (CanGameOver) {
             if (collider.IsTouching(Target)) {
                 var velocity = Target.GetComponent<Player>().PreviousDownwardsVelocity;
-                var newParticles = (ParticleSystem) Instantiate(GameOverParticles, transform.position.withX(Target.transform.position.x) + ParticlesOffset, Quaternion.Euler(ParticlesRotation));
+                var newParticles = (ParticleSystem) Instantiate(GameOverParticles, ParticleTransform.position.withX(Target.transform.position.x), ParticleTransform.rotation);
                 newParticles.maxParticles = Mathf.FloorToInt(-velocity);
+
+                Player.gameObject.SetActive(false);
+                Player.transform.position = originalPlayerPosition;
+                Player.WaitUntilMouseReleased = true;
+                CharacterSelect.Hidden = false;
 
                 OnGameOver();
                 CanGameOver = false;
+                canGameOverDelay = 0;
             }
         } else {
-            if (!collider.IsTouching(Target)) {
-                CanGameOver = true;
+            if (Player.gameObject.activeSelf && canGameOverDelay < canGameOverDelayTime) {
+                canGameOverDelay += Time.deltaTime;
+            } else if (Player.gameObject.activeSelf) {
+                if (!collider.IsTouching(Target)) {
+                    CanGameOver = true;
+                }
             }
         }
     }

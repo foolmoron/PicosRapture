@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ObjectEmitter : MonoBehaviour {
 
+    public AngelBoost AngelBoost;
     public GameObject ObjectToEmit;
 
     public bool HeightBasedEmit = true;
@@ -21,6 +22,10 @@ public class ObjectEmitter : MonoBehaviour {
         var animator = newObj.GetComponentInChildren<Animator>();
         if (animator) {
             animator.Play("Default", 0, Random.value);
+        }
+        var reporter = newObj.GetComponent<ReportKillOnDestroy>();
+        if (reporter) {
+            reporter.AngelBoost = AngelBoost;
         }
         newObj.tag = "Emitted";
     }
