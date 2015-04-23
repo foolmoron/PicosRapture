@@ -26,7 +26,9 @@ public class PlayerPacks : MonoBehaviour {
         for (int i = 0; i < Packs.Length; i++) {
             Packs[i].Unlocked = true;//PlayerPrefs.GetInt(Packs[i].name, 0) != 0;
         }
-        gameObject.SetActive(false);
+        if (Application.isPlaying) {
+            gameObject.SetActive(false);
+        }
     }
 
     void Update() {
