@@ -22,12 +22,20 @@ public class CharacterSelect : MonoBehaviour {
     public Collider2D LeftCollider;
     public Collider2D RightCollider;
     public GameObject UpArrow;
+    public GameObject Arrows;
 
     public bool Hidden;
+    [Range(0, 5)]
+    public float HiddenDelay = 1.5f;
+    float hiddenDelay;
     public float HideYOffset = -2.5f;
     [Range(0, 1)]
     public float HideLerpSpeed = 0.1f;
     float originalY;
+
+    public GameObject Logo;
+    public float LogoHideYOffset = 4f;
+    float logoOriginalY;
 
     WrapAround wrapAround;
     
@@ -36,6 +44,7 @@ public class CharacterSelect : MonoBehaviour {
         wrapAround.HorizontalWrapRadius = CharacterSpacing * PlayerPacks.Packs.Length / 2;
 
         originalY = transform.position.y;
+        logoOriginalY = Logo.transform.localPosition.y;
 
         Characters = new GameObject[PlayerPacks.Packs.Length];
         CharacterSprites = new SpriteRenderer[PlayerPacks.Packs.Length];
@@ -98,9 +107,18 @@ public class CharacterSelect : MonoBehaviour {
         // smooth lerp in and out of sight
         {
             if (Hidden) {
+                hiddenDelay = 0;
+                Arrows.gameObject.SetActive(false);
                 transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY + HideYOffset, HideLerpSpeed));
+                Logo.transform.localPosition = Logo.transform.localPosition.withY(Mathf.Lerp(Logo.transform.localPosition.y, logoOriginalY + LogoHideYOffset, HideLerpSpeed));
             } else {
-                transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY, HideLerpSpeed));
+                if (hiddenDelay < HiddenDelay) {
+                    hiddenDelay += Time.deltaTime;
+                } else {
+                    Arrows.gameObject.SetActive(true);
+                    transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY, HideLerpSpeed));
+                    Logo.transform.localPosition = Logo.transform.localPosition.withY(Mathf.Lerp(Logo.transform.localPosition.y, logoOriginalY, HideLerpSpeed));
+                }
             }
         }
     }
