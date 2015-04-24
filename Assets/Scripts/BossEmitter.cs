@@ -36,9 +36,18 @@ public class BossEmitter : MonoBehaviour {
         boss.TargetY = TargetY;
         boss.AimingTarget = AimingTarget;
 
-        var randomIndex = Mathf.FloorToInt(Random.value * (packs.Packs.Length - 1));
-        if (randomIndex == packToExclude)
-            randomIndex = packs.Packs.Length - 1;
+
+        var currentPlayerY = playerRigidbody.transform.position.y;
+        var allowedIndexes = new int[packs.Packs.Length];
+        var allowedIndexCount = 0;
+        for (int i = 0; i < packs.Packs.Length; i++) {
+            if (i != packToExclude && packs.Packs[i].MinHeight <= currentPlayerY) {
+                allowedIndexes[allowedIndexCount] = i;
+                allowedIndexCount++;
+            }
+        }
+
+        var randomIndex = allowedIndexes[Mathf.FloorToInt(Random.value * allowedIndexCount)];
         var pack = packs.Packs[randomIndex];
 
         boss.PlayerPacks = packs;

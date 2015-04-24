@@ -10,6 +10,7 @@ public class PlayerPack {
     public Sprite LockedCharacterSprite;
     public Sprite WeaponSprite;
     public GameObject BulletPrefab;
+    public float MinHeight;
     public bool Unlocked;
 }
 [ExecuteInEditMode]
