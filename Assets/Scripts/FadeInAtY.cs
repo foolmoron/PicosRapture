@@ -5,8 +5,8 @@ using System.Collections;
 public class FadeInAtY : MonoBehaviour {
 
     public float FadeInY;
-    [Range(0.001f, 20)]
-    public float FadeInPeriod = 3;
+    [Range(0.001f, 100)]
+    public float FadeInPeriod = 50;
     SpriteRenderer spriteRenderer;
 
     void Start() {
