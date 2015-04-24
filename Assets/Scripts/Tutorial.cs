@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Tutorial : MonoBehaviour {
 
+    public Player Player;
+
     [Range(0, 1)]
     public float Alpha = 1;
     public bool Hide;
@@ -27,7 +29,7 @@ public class Tutorial : MonoBehaviour {
             }
             showDelay = 0;
         };
-        FindObjectOfType<Player>().OnExploded += (explosion) => {
+        Player.OnExploded += (explosion) => {
             Hide = true;
         };
 
