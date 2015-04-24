@@ -11,11 +11,24 @@ public class HeightTracker : MonoBehaviour {
     public TextMesh CurrentScoreText;
     public TextMesh BestScoreText;
 
+    public Color RegularColor;
+    public Color NewHighColor;
+
     void Start() {
         PlayerPrefs.DeleteAll();
         var emitter = FindObjectOfType<ObjectEmitter>();
-        FindObjectOfType<GameOver>().OnGameOver += SaveHighscore;
-        FindObjectOfType<CharacterSelect>().OnCharacterSelect += () => CurrentHighest = 0;
+        FindObjectOfType<GameOver>().OnGameOver += () => {
+            if (CurrentHighest >= HighestEver) {
+                CurrentScoreText.color = NewHighColor;
+                BestScoreText.color = NewHighColor;
+            }
+            SaveHighscore();
+        };
+        FindObjectOfType<CharacterSelect>().OnCharacterSelect += () => {
+            CurrentHighest = 0;
+            CurrentScoreText.color = RegularColor;
+            BestScoreText.color = RegularColor;
+        };
         HighestEver = PlayerPrefs.GetFloat("highest");
     }
 
