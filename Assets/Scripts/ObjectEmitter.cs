@@ -16,6 +16,10 @@ public class ObjectEmitter : MonoBehaviour {
     [Range(0, 10)]
     public float EmitHeight = 0f;
 
+    void Start() {
+        FindObjectOfType<GameOver>().OnGameOver += Reset;
+    }
+
     public void Emit(Vector3 emitPos) {
         var randomPos = new Vector3(emitPos.x + (2 * Random.value - 1) * EmitWidth, emitPos.y + (2 * Random.value - 1) * EmitHeight, emitPos.z);
         var newObj = (GameObject) Instantiate(ObjectToEmit, randomPos, Quaternion.identity);

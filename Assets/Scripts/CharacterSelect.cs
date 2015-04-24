@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 
 public class CharacterSelect : MonoBehaviour {
+    public event Action OnCharacterSelect;
 
     public Camera MainCamera;
     public Player Player;
@@ -22,7 +23,9 @@ public class CharacterSelect : MonoBehaviour {
     public Collider2D LeftCollider;
     public Collider2D RightCollider;
     public GameObject UpArrow;
+
     public GameObject Arrows;
+    public Animator HeightTrackerAnimator;
 
     public bool Hidden;
     [Range(0, 5)]
@@ -37,6 +40,7 @@ public class CharacterSelect : MonoBehaviour {
     public float LogoHideYOffset = 4f;
     float logoOriginalY;
 
+    bool wasHidden;
     WrapAround wrapAround;
     
     void Start() {
@@ -82,6 +86,7 @@ public class CharacterSelect : MonoBehaviour {
                         PlayerPacks.SelectPlayerPack(packIndex);
                         Player.gameObject.SetActive(true);
                         Hidden = true;
+                        OnCharacterSelect();
                     }
                 } else if (LeftCollider.OverlapPoint(mouseWorld)) {
                     CurrentCharacter = (CurrentCharacter - 1 + PlayerPacks.Packs.Length) % PlayerPacks.Packs.Length;
@@ -108,16 +113,24 @@ public class CharacterSelect : MonoBehaviour {
         {
             if (Hidden) {
                 hiddenDelay = 0;
-                Arrows.gameObject.SetActive(false);
                 transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY + HideYOffset, HideLerpSpeed));
                 Logo.transform.localPosition = Logo.transform.localPosition.withY(Mathf.Lerp(Logo.transform.localPosition.y, logoOriginalY + LogoHideYOffset, HideLerpSpeed));
+                if (!wasHidden) {
+                    Arrows.gameObject.SetActive(false);
+                    HeightTrackerAnimator.Play("TrackerSmall");
+                }
+                wasHidden = true;
             } else {
                 if (hiddenDelay < HiddenDelay) {
                     hiddenDelay += Time.deltaTime;
                 } else {
-                    Arrows.gameObject.SetActive(true);
                     transform.position = transform.position.withY(Mathf.Lerp(transform.position.y, originalY, HideLerpSpeed));
                     Logo.transform.localPosition = Logo.transform.localPosition.withY(Mathf.Lerp(Logo.transform.localPosition.y, logoOriginalY, HideLerpSpeed));
+                    if (wasHidden) {
+                        Arrows.gameObject.SetActive(true);
+                        HeightTrackerAnimator.Play("TrackerBig");
+                    }
+                    wasHidden = false;
                 }
             }
         }

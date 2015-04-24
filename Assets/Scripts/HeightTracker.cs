@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class HeightTracker : MonoBehaviour {
 
@@ -9,16 +8,14 @@ public class HeightTracker : MonoBehaviour {
     public float CurrentHighest;
     public float HighestEver;
 
-    public Text CurrentScoreText;
-    public Text BestScoreText;
+    public TextMesh CurrentScoreText;
+    public TextMesh BestScoreText;
 
     void Start() {
+        PlayerPrefs.DeleteAll();
         var emitter = FindObjectOfType<ObjectEmitter>();
-        FindObjectOfType<GameOver>().OnGameOver += () => {
-            SaveHighscore();
-            CurrentHighest = 0;
-            emitter.Reset();
-        };
+        FindObjectOfType<GameOver>().OnGameOver += SaveHighscore;
+        FindObjectOfType<CharacterSelect>().OnCharacterSelect += () => CurrentHighest = 0;
         HighestEver = PlayerPrefs.GetFloat("highest");
     }
 
