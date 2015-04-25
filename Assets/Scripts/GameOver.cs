@@ -14,6 +14,8 @@ public class GameOver : MonoBehaviour {
     public bool CanGameOver;
     new Collider2D collider;
 
+    public AudioClip SplatterSound;
+
     public ParticleSystem GameOverParticles;
     public Transform ParticleTransform;
 
@@ -42,6 +44,7 @@ public class GameOver : MonoBehaviour {
                 OnGameOver();
                 CanGameOver = false;
                 canGameOverDelay = 0;
+                SplatterSound.Play();
             }
         } else {
             if (Player.gameObject.activeSelf && canGameOverDelay < canGameOverDelayTime) {

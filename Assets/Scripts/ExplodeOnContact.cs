@@ -22,7 +22,7 @@ public class ExplodeOnContact : MonoBehaviour {
         if (autoDestructTime < AutoDestructTime) {
             autoDestructTime += Time.deltaTime;
             if (autoDestructTime >= AutoDestructTime) {
-                Explode();
+                Destroy(gameObject);
             }
         }
     }

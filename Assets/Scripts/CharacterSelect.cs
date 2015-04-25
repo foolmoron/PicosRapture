@@ -25,6 +25,9 @@ public class CharacterSelect : MonoBehaviour {
     public GameObject UpArrow;
 
     public GameObject Arrows;
+    public AudioClip MoveSound;
+    public AudioClip SelectSound;
+    public AudioClip LockedSound;
     public Animator HeightTrackerAnimator;
 
     public bool Hidden;
@@ -87,11 +90,16 @@ public class CharacterSelect : MonoBehaviour {
                         Player.gameObject.SetActive(true);
                         Hidden = true;
                         OnCharacterSelect();
+                        SelectSound.Play();
+                    } else {
+                        LockedSound.Play();
                     }
                 } else if (LeftCollider.OverlapPoint(mouseWorld)) {
                     CurrentCharacter = (CurrentCharacter - 1 + PlayerPacks.Packs.Length) % PlayerPacks.Packs.Length;
+                    MoveSound.Play();
                 } else if (RightCollider.OverlapPoint(mouseWorld)) {
                     CurrentCharacter = (CurrentCharacter + 1 + PlayerPacks.Packs.Length) % PlayerPacks.Packs.Length;
+                    MoveSound.Play();
                 }
             }
         }

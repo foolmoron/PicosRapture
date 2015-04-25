@@ -31,7 +31,9 @@ public class Boss : MonoBehaviour {
     public float ShootInterval = 2f;
     [Range(0, 10)]
     public float TimeToShoot = 3f;
+
     public GameObject BloodPrefab;
+    public AudioClip[] ShootSounds;
 
     public bool DieSilently;
     public float PlayerFallSpeedSuicide = -25f;
@@ -92,6 +94,7 @@ public class Boss : MonoBehaviour {
                     newBulletObj.GetComponent<Rigidbody2D>().velocity = shootDirection * BulletSpeed;
                     newBulletObj.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg);
                     weaponRoot.kickback = -shootDirection * weaponRoot.kickbackStrength;
+                    ShootSounds.random().Play();
                 }
                 TimeToShoot = ShootInterval;
             }

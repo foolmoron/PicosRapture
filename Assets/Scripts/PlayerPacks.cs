@@ -22,10 +22,10 @@ public class PlayerPacks : MonoBehaviour {
     int previousIndex;
 
     void Awake() {
-        //PlayerPrefs.DeleteAll(); // for debug
+        PlayerPrefs.DeleteAll(); // for debug
         PlayerPrefs.SetInt(Packs[0].name, 1);
         for (int i = 0; i < Packs.Length; i++) {
-            Packs[i].Unlocked = true;//PlayerPrefs.GetInt(Packs[i].name, 0) != 0;
+            Packs[i].Unlocked = PlayerPrefs.GetInt(Packs[i].name, 0) != 0;
         }
         if (Application.isPlaying) {
             gameObject.SetActive(false);

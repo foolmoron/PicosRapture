@@ -42,6 +42,8 @@ public class Player : MonoBehaviour {
     [Range(0f, 1f)]
     public float TimeToShoot;
 
+    public AudioClip[] ShootSounds;
+
     public Vector2 OnHitPushStrength = new Vector2(5f, 0.5f);
     public float PreviousDownwardsVelocity;
 
@@ -104,6 +106,7 @@ public class Player : MonoBehaviour {
                             }
                             rigidbody2D.velocity = new Vector2(newVelocityX, newVelocityY);
                             OnShoot(shootDirection);
+                            ShootSounds.random().Play();
                         }
                         TimeToShoot += ShootInterval;
                     }

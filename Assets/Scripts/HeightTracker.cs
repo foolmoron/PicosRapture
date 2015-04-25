@@ -15,7 +15,6 @@ public class HeightTracker : MonoBehaviour {
     public Color NewHighColor;
 
     void Start() {
-        PlayerPrefs.DeleteAll();
         var emitter = FindObjectOfType<ObjectEmitter>();
         FindObjectOfType<GameOver>().OnGameOver += () => {
             if (CurrentHighest >= HighestEver) {
