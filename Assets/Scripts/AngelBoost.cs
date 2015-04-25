@@ -21,6 +21,8 @@ public class AngelBoost : MonoBehaviour {
     [Range(0f, 5000f)]
     public float BoostForce = 1000;
 
+    public AudioClip BoostSound;
+
     BossEmitter bossEmitter;
 
     Rigidbody2D targetRigidbody;
@@ -88,6 +90,7 @@ public class AngelBoost : MonoBehaviour {
                 targetRigidbody.velocity = targetRigidbody.velocity.withY(0);
                 targetRigidbody.AddForce(new Vector2(0, BoostForce));
                 HasAngelBoost = false;
+                BoostSound.Play();
             }
         }
     }
