@@ -21,7 +21,6 @@ public class SoundAwayAtY : MonoBehaviour {
         var normalizedAmountAboveSoundAwayPoint = (currentY - SoundAwayY) / SoundAwayPeriod;
         var currentYVelocity = Target.velocity.y;
         var normalizedVelocityValue = 1 - Mathf.Clamp01((-currentYVelocity + SoundAwayYVelocity) / SoundAwayVelocityPeriod);
-        Debug.Log(normalizedVelocityValue);
         source.volume = 1 - Mathf.Clamp01(Mathf.Min(normalizedAmountAboveSoundAwayPoint, normalizedVelocityValue));
     }
 }

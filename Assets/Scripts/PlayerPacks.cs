@@ -22,7 +22,7 @@ public class PlayerPacks : MonoBehaviour {
     int previousIndex;
 
     void Awake() {
-        PlayerPrefs.DeleteAll(); // for debug
+        //PlayerPrefs.DeleteAll(); // for debug
         PlayerPrefs.SetInt(Packs[0].name, 1);
         for (int i = 0; i < Packs.Length; i++) {
             Packs[i].Unlocked = PlayerPrefs.GetInt(Packs[i].name, 0) != 0;
@@ -40,8 +40,10 @@ public class PlayerPacks : MonoBehaviour {
 
     public void UnlockPlayer(int index) {
         PlayerPrefs.SetInt(Packs[index].name, 1);
-        Packs[index].Unlocked = true;
-        OnCharacterUnlocked(Packs[index], index);
+        if (!Packs[index].Unlocked) {
+            Packs[index].Unlocked = true;
+            OnCharacterUnlocked(Packs[index], index);
+        }
     }
 
     public void CyclePlayerPack() {
